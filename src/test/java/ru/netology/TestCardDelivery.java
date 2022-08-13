@@ -106,11 +106,11 @@ public class TestCardDelivery {
         open("http://localhost:9999");
         $("span[data-test-id='city'] .input__control").setValue("Белгород");
         $("span[data-test-id='date'] .input__control").setValue("14.08.2022");
-        $("span[data-test-id='name'] .input__control").setValue("Иванова Евгения");
-        $("span[data-test-id='phone'] .input__control").setValue("");
+        $("span[data-test-id='name'] .input__control").setValue("Ivanova Evgenia");
+        $("span[data-test-id='phone'] .input__control").setValue("+79278887766");
         $("label[data-test-id='agreement']").click();
         $x("//button //span[contains(text(), 'Забронировать')]/../..").click();
-        $x("//span[@data-test-id='phone']//span[contains(@class, 'input__sub')]")
+        $x("//span[@data-test-id='name']//span[contains(@class, 'input__sub')]")
                 .shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
     }
 
