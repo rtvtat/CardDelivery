@@ -16,13 +16,12 @@ public class TestCardDelivery {
 
     @Test
     public void testPositiveTest() {
-        String dateOrder = LocalDate.now().plusDays(3).format(formatter);
-
         open("http://localhost:9999");
         $("span[data-test-id='city'] .input__control").setValue("Белгород");
         $("span[data-test-id='date'] .input__control").sendKeys(Keys.CONTROL + "A");
         $("span[data-test-id='date'] .input__control").sendKeys(Keys.DELETE);
-        $("span[data-test-id='date'] .input__control").sendKeys(dateOrder);
+        String planningDate = getDateWithOffset(3);
+        $("span[data-test-id='date'] .input__control").sendKeys(planningDate);
 
         $("span[data-test-id='name'] .input__control").setValue("Иванова Евгения");
         $("span[data-test-id='phone'] .input__control").setValue("+79278887766");
@@ -31,6 +30,17 @@ public class TestCardDelivery {
         $x("//button//span[contains(text(), 'Забронировать')]//..//span[contains(@class, 'spin_visible')]")
                 .should(Condition.exist);
         $(".notification__title").should(Condition.visible, Duration.ofSeconds(15));
+        $(".notification__content")
+                .shouldHave(Condition.text("Встреча успешно забронирована на " + planningDate), Duration.ofSeconds(15))
+                .shouldBe(Condition.visible);
+    }
+
+    private String getDateWithOffset(int days) {
+        return getDateWithOffset(days, formatter);
+    }
+
+    private String getDateWithOffset(int days, DateTimeFormatter formatter) {
+        return LocalDate.now().plusDays(days).format(formatter);
     }
 
     @Test
